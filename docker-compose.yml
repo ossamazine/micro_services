@@ -22,7 +22,7 @@ services:
       - blockchain_master_service
       - localstack
     environment:
-      - DATABASE_URL=mysql+mysqlconnector://root:password@host.docker.internal:3306/user_db
+      - DATABASE_URL=mysql+mysqlconnector://root:@host.docker.internal:3306/user_db
       - USER_SERVICE_URL=http://blockchain_master_service:8001
       - AWS_ENDPOINT_URL=http://localstack:4566
       - AWS_ACCESS_KEY_ID=fakeAccessKey
@@ -52,6 +52,8 @@ services:
     environment:
       - SERVICES=s3,dynamodb,lambda
       - DEBUG=1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Montez le socket Docker
 
 volumes:
   mysql_data:
