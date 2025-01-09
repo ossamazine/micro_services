@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_DATABASE: user_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  user_management_service:
+    build:
+      context: .
+      dockerfile: user_management_service/Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+      - blockchain_master_service
+      - localstack
+    environment:
+      - DATABASE_URL=mysql+mysqlconnector://root:@mysql:3306/user_db
+      - USER_SERVICE_URL=http://blockchain_master_service:8001
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - AWS_ACCESS_KEY_ID=fakeAccessKey
+      - AWS_SECRET_ACCESS_KEY=fakeSecretKey
+    volumes:
+      - ./tests:/app/tests
+
+  blockchain_master_service:
+    build:
+      context: .
+      dockerfile: blockchain_master_service/Dockerfile
+    ports:
+      - "8001:8001"
+    depends_on:
+      - localstack
+    environment:
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - AWS_ACCESS_KEY_ID=fakeAccessKey
+      - AWS_SECRET_ACCESS_KEY=fakeSecretKey
+
+  localstack:
+    image: localstack/localstack
+    container_name: localstack
+    ports:
+      - "4566:4566"
+      - "4510-4559:4510-4559"
+    environment:
+      - SERVICES=s3,dynamodb,lambda
+      - DEBUG=1
+
+volumes:
+  mysql_data:

@@ -1,0 +1,51 @@
+# Test your FastAPI endpoints
+
+
+POST http://127.0.0.1:8000/balance
+Accept: application/json
+
+{
+  "address": "0x1B8F99E47828b91A324Ab568FbE0ba195ce83Bb6"
+}
+###
+POST 127.0.0.1:8000/withdraw
+Accept: application/json
+
+{
+  "signed_transaction": "7f1b4d780b45385068ceac3a2ab7d781dc2b64d75ccf589159d7ac92b072025a",
+  "amount_in_ether": 0.02
+}
+
+###
+POST http://127.0.0.1:8000/deposit
+Accept: application/json
+
+{
+  "signed_transaction": "0x3ee3dee1f5e54f56ce8db07b516fae19822d0c877219090b594476a08a7898bc",
+  "amount_in_ether": 0.12
+}
+###
+POST http://127.0.0.1:8000/transfer
+Accept: application/json
+
+{
+  "signed_transaction": "0x3ee3dee1f5e54f56ce8db07b516fae19822d0c877219090b594476a08a7898bc",
+  "to_address": "0x4C12DE565cd404D3eBD0962b9E2859C50D6013B0",
+  "amount_in_ether": 0.02
+}
+
+###
+GET http://127.0.0.1:8000/transactions
+
+###
+POST http://127.0.0.1:8000/contract-balance
+###
+POST http://127.0.0.1:8000/build-transaction
+Accept: application/json
+
+{
+              "address": '0x1B8F99E47828b91A324Ab568FbE0ba195ce83Bb6',
+              "amount_in_ether": 0.12
+            }
+
+
