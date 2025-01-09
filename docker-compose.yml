@@ -4,7 +4,7 @@ services:
   mysql:
     image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ROOT_PASSWORD: "password"
       MYSQL_DATABASE: user_db
     ports:
       - "3306:3306"
@@ -22,7 +22,7 @@ services:
       - blockchain_master_service
       - localstack
     environment:
-      - DATABASE_URL=mysql+mysqlconnector://root:@host.docker.internal:3306/user_db
+      - DATABASE_URL=mysql+mysqlconnector://root:password@host.docker.internal:3306/user_db
       - USER_SERVICE_URL=http://blockchain_master_service:8001
       - AWS_ENDPOINT_URL=http://localstack:4566
       - AWS_ACCESS_KEY_ID=fakeAccessKey
