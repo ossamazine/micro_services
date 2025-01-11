@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micro-services-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: micro-services
+  template:
+    metadata:
+      labels:
+        app: micro-services
+    spec:
+      containers:
+        # Conteneur pour le service de gestion des utilisateurs
+        - name: user-management-service
+          image: micro-services-user-management-service:latest
+          ports:
+            - containerPort: 8000
+          imagePullPolicy: IfNotPresent
+          
+        # Conteneur pour le service blockchain
+        - name: blockchain-master-service
+          image: micro-services-blockchain-master-service:latest
+          ports:
+            - containerPort: 8001
+          imagePullPolicy: IfNotPresent
+          
+        # Conteneur pour MySQL
+        - name: mysql
+          image: mysql:5.7
+          ports:
+            - containerPort: 3306
+          imagePullPolicy: IfNotPresent
+
+        # Conteneur pour Localstack
+        - name: localstack
+          image: localstack/localstack:latest
+          ports:
+            - containerPort: 4566
+          imagePullPolicy: IfNotPresent
